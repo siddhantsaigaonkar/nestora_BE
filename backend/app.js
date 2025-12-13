@@ -10,27 +10,37 @@ import { Strategy as LocalStrategy } from "passport-local";
 import User from "./models/user.js";
 import userRouter from "./routes/user.js";
 import dotenv from "dotenv";
+import MongoStore from "connect-mongo";
 dotenv.config(); 
-
-
-
-
-
 
 
 const app = express();
 const port = 8001;
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderLust";
+const MONGO_URL = process.env.MONGO_URL;
 
 /* -----------------------------------------------------
    CORS
 ----------------------------------------------------- */
 app.use(
   cors({
+    // origin: "http://localhost:3000",
+    // credentials: true,
+
     origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+// app.options("*", cors());
+
+
+// 🔥 REQUIRED for sessions + cookies
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 
 app.use((req, res, next) => {
@@ -60,6 +70,11 @@ app.use(
       sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URL,
+      collectionName: "sessions",
+      ttl: 14 * 24 * 60 * 60, // Session expires in 14 days
+    }),
   })
 );
 

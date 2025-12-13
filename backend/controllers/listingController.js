@@ -96,18 +96,7 @@ export const createListing = async (req, res) => {
 
 export const updateListing = async (req, res) => {
   try {
-    // console.log("==== updateListing HIT ====");
-    // console.log("Method:", req.method);
-    // console.log("Params:", req.params);
-    // console.log("Headers:", {
-    //   origin: req.headers.origin,
-    //   "content-type": req.headers["content-type"],
-    //   cookie: !!req.headers.cookie,
-    // });
-    // console.log("BODY keys:", Object.keys(req.body || {}));
-    // console.log("REQ.BODY (raw):", req.body);
-    // console.log("REQ.FILE:", req.file);
-    // console.log("REQ.USER:", req.user ? { id: req.user._id } : null);
+
 
     const slug = req.params.slug;
     const existing = await Listing.findOne({ slug });

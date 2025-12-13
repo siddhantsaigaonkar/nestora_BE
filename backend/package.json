@@ -1,4 +1,7 @@
 {
+  "engine":{
+    "node":"20.11.1"
+  },
   "name": "backendprojectphase1",
   "version": "1.0.0",
   "main": "index.js",
@@ -13,6 +16,7 @@
   "dependencies": {
     "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -26,5 +30,8 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^8.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }
