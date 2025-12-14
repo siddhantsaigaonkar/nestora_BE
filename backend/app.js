@@ -21,14 +21,6 @@ const MONGO_URL = process.env.MONGO_URL;
 /* -----------------------------------------------------
    CORS
 ----------------------------------------------------- */
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//     credentials: true,
-//   })
-// );
 
 app.use(
   cors({
@@ -37,15 +29,6 @@ app.use(
   })
 );
 
-// app.options("*", cors());
-
-
-// 🔥 REQUIRED for sessions + cookies
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-//   res.header("Access-Control-Allow-Credentials", "true");
-//   next();
-// });
 
 
 app.use((req, res, next) => {
@@ -76,8 +59,11 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      // secure: true,
+      // sameSite: "none",
+
+      secure: process.env.NODE_ENV === "production", // true on Vercel
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     },
     store: MongoStore.create({
