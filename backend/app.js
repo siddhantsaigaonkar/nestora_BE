@@ -21,26 +21,31 @@ const MONGO_URL = process.env.MONGO_URL;
 /* -----------------------------------------------------
    CORS
 ----------------------------------------------------- */
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     credentials: true,
+//   })
+// );
+
 app.use(
   cors({
-    // origin: "http://localhost:3000",
-    // credentials: true,
-
     origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+
 // app.options("*", cors());
 
 
 // 🔥 REQUIRED for sessions + cookies
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header("Access-Control-Allow-Credentials", "true");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+//   res.header("Access-Control-Allow-Credentials", "true");
+//   next();
+// });
 
 
 app.use((req, res, next) => {
@@ -56,18 +61,23 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+
+app.set("trust proxy", 1);
+
 /* -----------------------------------------------------
    SESSION
 ----------------------------------------------------- */
 app.use(
   session({
+    name: "nestora.sid",
     secret: "mySecretFlash",
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     },
     store: MongoStore.create({
@@ -77,6 +87,7 @@ app.use(
     }),
   })
 );
+
 
 /* -----------------------------------------------------
    PASSPORT (JSON FIX)

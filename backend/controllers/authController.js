@@ -27,6 +27,9 @@ export const registerUser = async (req, res, next) => {
     req.login(registeredUser, (err) => {
       if (err) return next(err);
 
+
+      console.log(`user created`);
+      
       return res.status(200).json({
         message: `${username} registered successfully`,
         user: {
