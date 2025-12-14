@@ -32,7 +32,7 @@ const MONGO_URL = process.env.MONGO_URL;
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://nestora-fe.vercel.app",
     credentials: true,
   })
 );
